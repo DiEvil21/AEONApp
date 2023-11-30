@@ -5,6 +5,7 @@ import retrofit2.http.*
 import ru.dievil.aeonapp.model.LoginRequest
 import ru.dievil.aeonapp.model.LoginResponse
 import ru.dievil.aeonapp.model.Payment
+import ru.dievil.aeonapp.model.PaymentsResponse
 
 interface ApiService {
     @POST("login")
@@ -19,6 +20,6 @@ interface ApiService {
         @Header("app-key") appKey: String,
         @Header("v") version: String,
         @Header("token") token: String
-    ): Response<List<Payment>>
+    ): Response<PaymentsResponse>
 }
 

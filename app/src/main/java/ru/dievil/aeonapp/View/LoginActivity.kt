@@ -1,5 +1,6 @@
 package ru.dievil.aeonapp.View
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Debug
@@ -46,10 +47,17 @@ class LoginActivity : AppCompatActivity() {
                     if (token.isNotEmpty()) {
                         Log.d("retrofit", token)
                         // Вход успешен, вызов метода для получения данных о платежах
-                        /*viewModel.getPayments(token).observe(this) { payments ->
-                            // Обработка полученных данных о платежах
-                            // Можете, например, перейти на другую активность с отображением платежей
+                        // Создаем Intent для открытия PaymentsActivity
+                        val intent = Intent(this, PaymentsActivity::class.java)
+
+                        // Передаем токен в PaymentsActivity
+                        intent.putExtra("TOKEN", token)
+
+                        // Запускаем активность
+                        startActivity(intent)
+                        /*viewModel.getPayments(token).observe(this) {payments ->
                             Log.d("payments", payments.toString())
+
                         }*/
                     } else {
                         // Обработка неудачного входа

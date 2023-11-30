@@ -6,6 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import ru.dievil.aeonapp.network.RetrofitInstance
 import ru.dievil.aeonapp.model.LoginRequest
 import ru.dievil.aeonapp.model.Payment
+import ru.dievil.aeonapp.model.PaymentsResponse
 
 class AuthViewModel : ViewModel() {
 
@@ -33,16 +34,32 @@ class AuthViewModel : ViewModel() {
         }
     }
 
+
+
     fun getPayments(token: String) = liveData(Dispatchers.IO) {
-        val response = RetrofitInstance.api.getPayments(
-            appKey = "12345",
-            version = "1",
-            token = token
-        )
-        if (response.isSuccessful) {
-            emit(response.body() ?: emptyList())
-        } else {
-            emit(emptyList<Payment>())
+        try {
+            val response = RetrofitInstance.api.getPayments(
+                appKey = "12345",
+                version = "1",
+                token)
+
+            if (response.isSuccessful) {
+                val responseBody = response.body()
+                if (responseBody != null && responseBody.success == "true") {
+                    emit(responseBody)
+                } else {
+                    emit(PaymentsResponse("false", emptyList()))
+                }
+            } else {
+                emit(PaymentsResponse("false", emptyList()))
+            }
+        } catch (e: Exception) {
+            // Обработка ошибок, если они возникнут при выполнении запроса
+            emit(PaymentsResponse("false", emptyList()))
         }
     }
+
+
+
+
 }
