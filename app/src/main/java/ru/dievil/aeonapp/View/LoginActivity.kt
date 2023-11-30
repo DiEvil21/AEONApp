@@ -25,20 +25,18 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
+        // Инициализация
         viewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
-
-        // Инициализация полей ввода и кнопки
         editTextUsername = findViewById(R.id.et_login)
         editTextPassword = findViewById(R.id.et_password)
         loginButton = findViewById(R.id.btn_login)
 
-        // Добавление слушателя на кнопку входа
+        // Слушатель на кнопку входа
         loginButton.setOnClickListener {
             val username = editTextUsername.text.toString()
             val password = editTextPassword.text.toString()
 
-            // Проверка наличия введенных данных
+            // Проверка ввели ли данные
             if (username.isNotEmpty() && password.isNotEmpty()) {
                 val loginRequest = LoginRequest(username, password)
                 Log.d("retrofit", loginRequest.toString())
@@ -46,26 +44,17 @@ class LoginActivity : AppCompatActivity() {
                 viewModel.login(loginRequest).observe(this) { token ->
                     if (token.isNotEmpty()) {
                         Log.d("retrofit", token)
-                        // Вход успешен, вызов метода для получения данных о платежах
-                        // Создаем Intent для открытия PaymentsActivity
                         val intent = Intent(this, PaymentsActivity::class.java)
-
                         // Передаем токен в PaymentsActivity
                         intent.putExtra("TOKEN", token)
-
-                        // Запускаем активность
                         startActivity(intent)
-                        /*viewModel.getPayments(token).observe(this) {payments ->
-                            Log.d("payments", payments.toString())
-
-                        }*/
                     } else {
-                        // Обработка неудачного входа
+                        // Неудачный вход
                         Toast.makeText(this, "Неудачный вход", Toast.LENGTH_SHORT).show()
                     }
                 }
             } else {
-                // Пользователь не ввел данные
+                // Пустые данные
                 Toast.makeText(this, "Введите логин и пароль", Toast.LENGTH_SHORT).show()
             }
         }

@@ -3,7 +3,7 @@ package ru.dievil.aeonapp.model
 data class Payment(
     val id: Int,
     val title: String,
-    val amount: Any, // Используем Any, так как amount может быть Int или String
+    val amount: Any,
     val created: Long
 )
 
