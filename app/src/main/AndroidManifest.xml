@@ -18,9 +18,6 @@
             android:name=".View.PaymentsActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
-            android:exported="false" />
-        <activity
             android:name=".View.LoginActivity"
             android:exported="true">
             <intent-filter>

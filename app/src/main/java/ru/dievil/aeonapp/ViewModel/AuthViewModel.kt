@@ -29,37 +29,30 @@ class AuthViewModel : ViewModel() {
                 emit("")
             }
         } catch (e: Exception) {
-            // Обработка ошибок, если они возникнут при выполнении запроса
+            // Обработка ошибок
             emit("")
         }
     }
 
-
-
     fun getPayments(token: String) = liveData(Dispatchers.IO) {
         try {
-            val response = RetrofitInstance.api.getPayments(
-                appKey = "12345",
-                version = "1",
-                token)
+            val response = RetrofitInstance.api.getPayments("12345", "1", token)
 
             if (response.isSuccessful) {
                 val responseBody = response.body()
                 if (responseBody != null && responseBody.success == "true") {
-                    emit(responseBody)
+                    emit(responseBody.response)
                 } else {
-                    emit(PaymentsResponse("false", emptyList()))
+                    emit(emptyList<Payment>())
                 }
             } else {
-                emit(PaymentsResponse("false", emptyList()))
+                emit(emptyList<Payment>())
             }
         } catch (e: Exception) {
-            // Обработка ошибок, если они возникнут при выполнении запроса
-            emit(PaymentsResponse("false", emptyList()))
+            // Обработка ошибок
+            emit(emptyList<Payment>())
         }
     }
-
-
 
 
 }
